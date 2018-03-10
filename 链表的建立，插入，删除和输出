@@ -1,0 +1,161 @@
+#include<stdio.h>
+#include<malloc.h>
+#include<stdlib.h>
+#define LEN sizeof(struct student)
+
+struct student *creat();
+void print(struct student *head);
+struct student *del(struct student *head,int num);
+struct student *insert(struct student *head,struct student *stu);
+//第一个参数是链表的地址，第二个参数是需要被插入的结构体的地址
+
+struct student
+{
+     int num;
+     float score;
+     struct student *next;
+};
+int n;
+struct student *creat()
+{
+     struct student *p1,*p2,*head;
+     p1=p2=(struct student*)malloc(LEN);
+     printf("Please enter the num:");
+     scanf("%d",&p1->num);
+     printf("Please enter the score:");
+     scanf("%f",&p1->score);
+     head=NULL;
+     n=0;
+     while (p1->num!=0)
+     {
+         n++;
+         if(n==1)
+         {
+             head=p1;
+         }
+         else
+         {
+             p2->next=p1;
+         }
+         p2=p1;
+         p1=(struct student*)malloc(LEN);
+         printf("Please enter the num:");
+         scanf("%d",&p1->num);
+         printf("Please enter the score:");
+         scanf("%f",&p1->score);
+
+     }
+     p2->next=NULL;
+     return head;//返回所创建链表的头结点
+}
+void print(struct student *head)
+{
+      struct student *p;
+      printf("There are %d records!\n",n);
+      p=head;
+      if(head!=NULL)
+      {
+          while(p!=NULL)
+          {
+              printf("num:%d score:%5.2f\n",p->num,p->score);
+              p=p->next;/*当没有这一条语句时，while循环会一直执行，停不下来，打印的一直是num=1的数据*/
+          }
+      }
+}
+
+struct student *del(struct student *head,int num)
+{
+     struct student *p1,*p2;
+     p1=head;
+     if(head==NULL)
+     {
+         printf("No data!\n");
+         goto END;
+     }
+     else
+     {
+         while(p1->num!=num&&p1->next!=NULL)
+         {
+             p2=p1;
+             p1=p1->next;
+         }
+         if(p1->num==num)
+         {
+             if(p1==head)
+             {
+               head=p1->next;
+             }
+             else
+             {
+               p2->next=p1->next;
+             }
+             printf("Delete %d succeed!\n",num);
+         }
+         else
+         {
+             printf("Not Found\n");
+         }
+
+     }
+n--;
+END: return head;
+}
+struct student *insert(struct student *head,struct student *stu)
+{
+    struct student *p0,*p1,*p2;
+    p1=head;
+    p0=stu;
+    if(head==NULL)
+    {
+        head=p0;
+        p0->next=NULL;
+    }
+    else
+    {
+      while((p0->num>p1->num)&&(p1->next!=NULL))
+      {
+       p2=p1;
+       p1=p1->next;
+      }
+      if(p0->num<=p1->num)
+      {
+          if(p1==head)
+          {
+              head=p0;
+          }
+          else
+          {
+              p2->next=p0;
+          }
+           p0->next=p1;
+      }
+      else
+      {
+          p1->next=p0;
+          p0->next=NULL;
+      }
+    }
+   n++;
+   return head;
+}
+int main()
+{
+     struct student *stu,*p,stu1;
+     int numb;
+     stu=creat();
+     p=stu;
+     print(p);
+
+     printf("Please enter the num to delete:\n");
+     scanf("%d",&numb);
+     print(del(p,numb));
+
+     printf("Please enter the num to insert:\n");
+     scanf("%d",&stu1.num);
+     printf("Please input the score:\n");
+     scanf("%f",&stu1.score);
+     p=insert(p,&stu1);
+     print(p);
+
+     return 0;
+}
