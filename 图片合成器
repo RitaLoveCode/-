@@ -1,0 +1,49 @@
+#include<stdio.h>
+#include<stdlib.h>
+//文件图片合成器
+int main()
+{
+    FILE *f_file,*f_pic,*f_finish;
+    char ch,pic_name[20],file_name[20],finish_name[20];
+    printf("请输入需要合成的文件和图片的名称：\n");
+    printf("图片：");
+    scanf("%s",pic_name);
+    printf("文件：");
+    scanf("%s",file_name);
+    printf("合成为：");
+    scanf("%s",finish_name);
+    if(!(f_pic=fopen(pic_name,"rb")))
+    //以二进制的读取形式打开
+    {
+        printf("Can't Open File %s!\n",f_pic);
+        return;
+    }
+    if(!(f_file=fopen(file_name,"rb")))
+    {
+        printf("Can't Open File %s!\n",f_file);
+        return;
+    }
+    if(!(f_finish=fopen(finish_name,"wb")))
+    {
+        printf("Can't Open File %s!\n",f_finish);
+        return;
+    }
+    //操作如下：把f_pic的内容读出来，再写进file_finish
+    //然后把f_file的内容都出来，写进file_finish
+    //写入文件要知道文件指针有没有到结尾才能结束，用到feof()，
+    //当文件的指针到结尾时返回非零
+    while(!(feof(f_pic)))
+    {
+        ch=fgetc(f_pic);
+        fputc(ch,f_finish);
+    }
+    //文件用的时候要打开，用完千万要记得关闭
+    fclose(f_pic);
+    while(!(feof(f_file)))
+    {
+        ch=fgetc(f_file);
+        fputc(ch,f_finish);
+    }
+    fclose(f_file);
+        system("pause");
+}
